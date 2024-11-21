@@ -1,0 +1,29 @@
+import requests
+
+def check_availability(url):
+    try:
+        response = requests.get(url)
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
+
+def authenticate(url, username, password):
+    payload = {'log': username, 'pwd': password}
+    try:
+        response = requests.post(url, data=payload)
+        return "Dashboard" in response.text  # Exemplo de validação
+    except requests.exceptions.RequestException:
+        return False
+
+# URLs da aplicação WordPress
+base_url = "http://localhost"
+login_url = f"{base_url}/wp-login.php"
+
+if check_availability(base_url):
+    print("Aplicação está disponível.")
+    if authenticate(login_url, "admin", "senha123"):
+        print("Autenticação bem-sucedida.")
+    else:
+        print("Erro na autenticação.")
+else:
+    print("Aplicação indisponível.")
