@@ -1,0 +1,25 @@
+Projeto Integrador: Monitoramento de Aplicação Web com Python
+Introdução (Parte 1 - Documentação)
+O objetivo deste projeto é desenvolver uma solução de monitoramento para aplicações web que utilizam mecanismos de autenticação. A solução será implementada em Python e validará se a aplicação está operando dentro da normalidade. Para isso, utilizaremos um ambiente de aplicação baseado no CMS WordPress, configurado em contêineres Docker.
+
+A escolha do WordPress como aplicação base deve-se à sua ampla utilização no mercado e à presença de sistemas de autenticação bem definidos. A solução monitorará a aplicação, verificando a disponibilidade do serviço, a funcionalidade das rotas principais e a capacidade de autenticação de usuários.
+
+(Parte 2 - Documentação) 
+Procedimento e Implementação 
+1. Ambiente de Desenvolvimento
+
+Configuração do ambiente com Docker, criando contêineres para WordPress e o banco de dados MySQL.
+Instalação das bibliotecas necessárias em Python, como requests para envio de requisições HTTP e unittest para testes automatizados.
+2. Monitoramento da Aplicação
+A aplicação de monitoramento será projetada para executar os seguintes testes:
+
+Verificação de disponibilidade: Testa a resposta da aplicação na rota principal (ex.: /wp-login.php).
+Autenticação: Envia credenciais de login e verifica se o sistema retorna o status esperado.
+Validação de funcionalidades-chave: Testa se páginas importantes, como o painel de controle, estão acessíveis após a autenticação.
+3. Procedimento de Utilização
+
+Execução do Monitoramento: O script Python será configurado para rodar periodicamente (via cron job ou equivalente).
+Alertas: Se forem identificados problemas, a solução poderá enviar notificações via e-mail ou Slack (configuração opcional).
+
+Conclusão
+Este projeto combina habilidades em programação Python, manipulação de APIs e automação de testes para construir uma solução robusta de monitoramento. A abordagem documentada garante reprodutibilidade e transparência, possibilitando melhorias futuras.
