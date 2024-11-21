@@ -1,29 +1,57 @@
 import requests
 
 def check_availability(url):
+    """
+    Verifica se a URL da aplicação está disponível.
+    :param url: URL base da aplicação
+    :return: True se a aplicação responder com status 200, caso contrário False.
+    """
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
         return response.status_code == 200
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao verificar disponibilidade: {e}")
         return False
 
 def authenticate(url, username, password):
+    """
+    Testa a autenticação em uma aplicação WordPress.
+    :param url: URL de login da aplicação
+    :param username: Nome de usuário para autenticação
+    :param password: Senha para autenticação
+    :return: True se a autenticação for bem-sucedida, caso contrário False.
+    """
     payload = {'log': username, 'pwd': password}
     try:
-        response = requests.post(url, data=payload)
-        return "Dashboard" in response.text  # Exemplo de validação
-    except requests.exceptions.RequestException:
+        response = requests.post(url, data=payload, timeout=5)
+        # Valida se "Dashboard" ou algo semelhante está presente no HTML
+        return "Dashboard" in response.text or "Painel" in response.text
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao tentar autenticar: {e}")
         return False
 
-# URLs da aplicação WordPress
-base_url = "http://localhost"
-login_url = f"{base_url}/wp-login.php"
+def main():
+    # URLs da aplicação WordPress
+    base_url = "http://localhost"  # Altere para a URL correta se estiver usando Docker
+    login_url = f"{base_url}/wp-login.php"
 
-if check_availability(base_url):
-    print("Aplicação está disponível.")
-    if authenticate(login_url, "admin", "senha123"):
-        print("Autenticação bem-sucedida.")
+    # Credenciais para autenticação
+    username = "admin"  # Substitua pelo nome de usuário do WordPress
+    password = "senha123"  # Substitua pela senha correta
+
+    print("Iniciando monitoramento da aplicação...")
+
+    # Verifica disponibilidade da aplicação
+    if check_availability(base_url):
+        print("✅ Aplicação está disponível.")
+        
+        # Testa autenticação
+        if authenticate(login_url, username, password):
+            print("✅ Autenticação bem-sucedida.")
+        else:
+            print("❌ Erro na autenticação. Verifique as credenciais.")
     else:
-        print("Erro na autenticação.")
-else:
-    print("Aplicação indisponível.")
+        print("❌ Aplicação indisponível.")
+
+if __name__ == "__main__":
+    main()
